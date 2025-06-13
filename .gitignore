@@ -1,0 +1,34 @@
+# Archivos y carpetas de IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+*.ipr
+
+# Archivos de compilación de Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos temporales y del sistema
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Configuración específica de sistema operativo
+# macOS
+__MACOSX/
+
+# Windows
+*.exe
+*.dll
+
+# Linux
+*~
+
+# Archivos de test temporales
+test-output/
