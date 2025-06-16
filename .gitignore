@@ -1,9 +1,9 @@
 # Archivos y carpetas de IntelliJ IDEA
-.idea/
-*.iml
 *.iws
 out/
 *.ipr
+*.txt
+
 
 # Archivos de compilación de Java
 *.class

@@ -1,13 +1,14 @@
 import moneda.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainMoneda {
-    public static void main (String[] args) {
+    public static void main (String[] args) throws IOException {
+        List<String> historial = new ArrayList<>();
+        String ultimoCalculo = "";
         Scanner input = new Scanner(System.in);
         boolean key = true;
         NumberFormat formato = NumberFormat.getNumberInstance(Locale.of("es","AR"));
@@ -16,8 +17,11 @@ public class MainMoneda {
         while (key) {
             boolean calculadora = false;
             LinkApi moneda = new LinkApi();
-            System.out.println("\nResponda con una opcion del Menu");
             System.out.println("""
+                    ********************************************************\
+                    
+                          Responda con una opcion del Menu:\
+                    
                      A.- Desplegar la lista de divisas disponibles.\
                     
                      B.- Todas las conversiones de una moneda y su fecha.\
@@ -26,9 +30,15 @@ public class MainMoneda {
                     
                      D.- Calculadora de una a muchas monedas.\
                     
+                     E.- Guardar registros (último cálculo o historial completo).\
+                    
                      Q.- Salir.\
+                    
+                    ********************************************************\
                     """);
+            System.out.print("Respuesta: ");
             char tecla = input.next().charAt(0);
+            input.nextLine();
             switch (tecla) {
                 case 'A':
                 case 'a':
@@ -38,8 +48,10 @@ public class MainMoneda {
                 case 'b':
                     System.out.println("Ingrese el nombre de la divisa de la cual deseé conocer sus conversiones");
                     String nombre = input.next();
+                    input.nextLine();
                     System.out.println("\n- Ingrese la fecha con la cual desea obtener el valor de la moneda: (dd/mm/yyyy)");
                     String fecha = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(nombre,fecha);
                     break;
                 case 'C':
@@ -47,11 +59,14 @@ public class MainMoneda {
                     calculadora = true;
                     System.out.println("Elija la primer moneda. (Indique nombre)");
                     String primera = input.next();
+                    input.nextLine();
                     System.out.println("Indique el valor: ");
                     double valorPrimera = input.nextDouble();
+                    input.nextLine();
 
                     System.out.println("Indique la segunda moneda. (Indique nombre)");
                     String segunda = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(segunda,"");
                     RequestApi calcu = new RequestApi(moneda);
                     calcu.instanciarDivisa();
@@ -74,7 +89,8 @@ public class MainMoneda {
                                 Moneda: %s ($%s %s)
                                 Resultado:
                                    - $%s %s
-                                   - $%s %s""", primera, formato.format(valorPrimera), segunda, formato.format(valor1), primera, formato.format(valorPrimera), primera
+                                   - $%s %s
+                            """, primera, formato.format(valorPrimera), segunda, formato.format(valor1), primera, formato.format(valorPrimera), primera
                     , formato.format(resultado),segunda);
                     break;
                 case 'D':
@@ -82,19 +98,56 @@ public class MainMoneda {
                     calculadora = true;
                     System.out.println("Ingrese el nombre de la moneda:");
                     String nombre1 = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(nombre1,"");
                     System.out.println("Ingrese la cantidad de la moneda:");
                     double cantidad1 = input.nextDouble();
+                    input.nextLine();
                     RequestApi calcu1 = new RequestApi(moneda);
                     calcu1.instanciarDivisa();
                     Map<String,Double> respuesta1 = calcu1.getDivisa().getValores();
                     System.out.printf("""
-                            \nLa moneda %s con la cantidad de $%s cuesta lo siguiente en cada moneda:\n""",nombre1,
+                            \nLa moneda %s con la cantidad de $%s cuesta lo siguiente en cada moneda:
+                            """,nombre1,
                             formato.format(cantidad1));
                     for (Map.Entry<String, Double> entrada: respuesta1.entrySet()){
                         String clave = entrada.getKey();
                         Double valor = entrada.getValue();
-                        System.out.println(clave + ": $" + formato.format(cantidad1 / valor));
+                        System.out.println(clave + ": $" + formato.format(cantidad1 * valor));
+                    }
+                    break;
+                case 'E':
+                case 'e':
+                    System.out.println("""
+                        ¿Qué desea guardar?
+                        1 - Guardar historial completo
+                        2 - Guardar último cálculo realizado
+                        """);
+                    String opcionGuardar = input.next();
+                    input.nextLine();
+
+                    try {
+                        if (opcionGuardar.equals("1")) {
+                            FileWriter writer = new FileWriter("historial.txt", true);
+                            for (String entrada : historial) {
+                                writer.write(entrada + "\n");
+                            }
+                            writer.close();
+                            System.out.println("Historial guardado correctamente en 'historial.txt'");
+                        } else if (opcionGuardar.equals("2")) {
+                            if (!ultimoCalculo.isEmpty()) {
+                                FileWriter writer = new FileWriter("ultimo_calculo.txt");
+                                writer.write(ultimoCalculo + "\n");
+                                writer.close();
+                                System.out.println("Último cálculo guardado en 'ultimo_calculo.txt'");
+                            } else {
+                                System.out.println("Aún no se ha realizado ningún cálculo.");
+                            }
+                        } else {
+                            System.out.println("Opción inválida.");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Ocurrió un error al guardar los datos: " + e.getMessage());
                     }
                     break;
                 case 'Q':
@@ -113,10 +166,11 @@ public class MainMoneda {
                 DivisaApi resultado = requestApi.instanciarDivisa();
                 System.out.println("\n" + resultado);
             }
-            System.out.println("Presione 'enter' para continuar.");
-            String s = input.next();
+            if (key) {
+                System.out.println("Presione 'enter' para continuar.");
+                input.nextLine();
+            }
         }
         input.close();
-
     }
 }
