@@ -4,6 +4,7 @@
 *.iws
 out/
 *.ipr
+*.txt
 
 # Archivos de compilación de Java
 *.class
