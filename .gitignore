@@ -23,6 +23,7 @@
 *.war
 *.ear
 out/
+*.txt
 
 # ========================
 # Archivos temporales
