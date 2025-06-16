@@ -16,8 +16,11 @@ public class MainMoneda {
         while (key) {
             boolean calculadora = false;
             LinkApi moneda = new LinkApi();
-            System.out.println("\nResponda con una opcion del Menu");
             System.out.println("""
+                    ********************************************************\
+                    
+                          Responda con una opcion del Menu:\
+                    
                      A.- Desplegar la lista de divisas disponibles.\
                     
                      B.- Todas las conversiones de una moneda y su fecha.\
@@ -27,8 +30,12 @@ public class MainMoneda {
                      D.- Calculadora de una a muchas monedas.\
                     
                      Q.- Salir.\
+                    
+                    ********************************************************\
                     """);
+            System.out.print("Respuesta: ");
             char tecla = input.next().charAt(0);
+            input.nextLine();
             switch (tecla) {
                 case 'A':
                 case 'a':
@@ -38,8 +45,10 @@ public class MainMoneda {
                 case 'b':
                     System.out.println("Ingrese el nombre de la divisa de la cual deseé conocer sus conversiones");
                     String nombre = input.next();
+                    input.nextLine();
                     System.out.println("\n- Ingrese la fecha con la cual desea obtener el valor de la moneda: (dd/mm/yyyy)");
                     String fecha = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(nombre,fecha);
                     break;
                 case 'C':
@@ -47,11 +56,14 @@ public class MainMoneda {
                     calculadora = true;
                     System.out.println("Elija la primer moneda. (Indique nombre)");
                     String primera = input.next();
+                    input.nextLine();
                     System.out.println("Indique el valor: ");
                     double valorPrimera = input.nextDouble();
+                    input.nextLine();
 
                     System.out.println("Indique la segunda moneda. (Indique nombre)");
                     String segunda = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(segunda,"");
                     RequestApi calcu = new RequestApi(moneda);
                     calcu.instanciarDivisa();
@@ -82,9 +94,11 @@ public class MainMoneda {
                     calculadora = true;
                     System.out.println("Ingrese el nombre de la moneda:");
                     String nombre1 = input.next();
+                    input.nextLine();
                     moneda.setLinkCompleto(nombre1,"");
                     System.out.println("Ingrese la cantidad de la moneda:");
                     double cantidad1 = input.nextDouble();
+                    input.nextLine();
                     RequestApi calcu1 = new RequestApi(moneda);
                     calcu1.instanciarDivisa();
                     Map<String,Double> respuesta1 = calcu1.getDivisa().getValores();
@@ -114,9 +128,8 @@ public class MainMoneda {
                 System.out.println("\n" + resultado);
             }
             System.out.println("Presione 'enter' para continuar.");
-            String s = input.next();
+            input.nextLine();
         }
         input.close();
-
     }
 }
