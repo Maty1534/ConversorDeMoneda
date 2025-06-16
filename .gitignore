@@ -1,6 +1,4 @@
 # Archivos y carpetas de IntelliJ IDEA
-.idea/
-*.iml
 *.iws
 out/
 *.ipr
