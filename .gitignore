@@ -1,34 +1,60 @@
-# Archivos y carpetas de IntelliJ IDEA
-*.iws
-out/
-*.ipr
-*.txt
+# ========================
+# IntelliJ IDEA
+# ========================
+# Ignorar configuraciones locales, pero conservar estructura del proyecto
+.idea/workspace.xml
+.idea/shelf/
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dataSources/
+.idea/**/dataSources.local.xml
 
+# Incluir solo los archivos necesarios de IntelliJ
+!*.iml
+!.idea/modules.xml
+!.idea/misc.xml
+!.idea/vcs.xml
 
+# ========================
 # Archivos de compilación de Java
+# ========================
 *.class
 *.jar
 *.war
 *.ear
+out/
+*.txt
 
-# Archivos temporales y del sistema
+# ========================
+# Archivos temporales
+# ========================
 *.log
 *.tmp
 *.bak
 *.swp
-.DS_Store
-Thumbs.db
+*.iws
+*.ipr
 
-# Configuración específica de sistema operativo
+# ========================
+# Configuración específica del sistema
+# ========================
 # macOS
+.DS_Store
 __MACOSX/
 
 # Windows
+Thumbs.db
 *.exe
 *.dll
 
 # Linux
 *~
 
-# Archivos de test temporales
+# ========================
+# Archivos de pruebas o datos temporales
+# ========================
 test-output/
+
+# ========================
+# Si querés que historial.txt se suba, no lo ignores
+# (Removido: *.txt)
