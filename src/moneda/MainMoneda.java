@@ -1,4 +1,4 @@
-import moneda.*;
+package moneda;
 
 import java.io.FileWriter;
 import java.io.IOException;
